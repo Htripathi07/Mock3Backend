@@ -3,17 +3,30 @@ const router = express.Router();
 const Classified = require("../models/Classified");
 
 // POST: Create a new classified
-router.post("/create", async (req, res) => {
-  try {
-    const newClassified = new Classified(req.body);
-    const savedClassified = await newClassified.save();
-    res
-      .status(201)
-      .json({ message: "Classified created Successfully", savedClassified });
-  } catch (error) {
-    res.status(500).json({ error: "Server error" });
-  }
-});
+
+    router.post("/create", async (req, res) => {
+      let { name, description, category, imageUrl, location, date, price } = req.body;
+      console.log(req.body);
+      const new_ad = new Classified({
+          name,
+          description,
+          category,
+          imageUrl,
+          location,
+          date,
+          price,
+        });
+        console.log(new_ad);
+      try{
+        await new_ad.save();
+        res.send("ad added");
+      }
+      catch(error){
+        
+        res.status(500).json({ error: 'Server Error' });
+      }
+    });
+
 
 // GET: Fetch all classifieds
 router.get("/", async (req, res) => {
